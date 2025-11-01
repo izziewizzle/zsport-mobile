@@ -1,7 +1,6 @@
 Nama    : Izzati Maharani Yusmananda<br>
 NPM     : 2406361675<br>
 Kelas   : PBP F<br>
-Link    : [ZSPORT](https://izzati-maharani-zsport.pbp.cs.ui.ac.id/)
 
 <details align="justify">
     <summary><b>Tugas 7</b></summary>
