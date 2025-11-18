@@ -72,7 +72,7 @@ class _AddProductPageState extends State<AddProductPage> {
             ElevatedButton(
               onPressed: () async {
                 await request.post(
-                  "https://izzati-maharani-zsport.pbp.cs.ui.ac.id/create-product-ajax/",
+                  "http://localhost:8000/create-product-ajax/",
                   {
                     "name": nameC.text,
                     "price": priceC.text,
