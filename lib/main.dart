@@ -1,23 +1,54 @@
 import 'package:flutter/material.dart';
-import 'screens/home_page.dart';
-import 'screens/add_product_page.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
-void main() => runApp(const ZSPORTApp());
+import 'package:zsport_mobile/screens/login_page.dart';
+import 'package:zsport_mobile/screens/home_page.dart';
 
-class ZSPORTApp extends StatelessWidget {
-  const ZSPORTApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  final cookieRequest = CookieRequest();
+
+  runApp(
+    Provider(
+      create: (_) => cookieRequest,
+      child: MaterialApp(
+        home: LoginPage(),
+      ),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cookieRequest = Provider.of<CookieRequest>(context);
+
     return MaterialApp(
-      title: 'ZSPORT',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.green),
-      initialRoute: '/',
-      routes: {
-        '/': (_) => const ZSPORTHomePage(),
-        '/add-product': (_) => const AddProductPage(),
-      },
+      title: "ZSPORT",
+      home: FutureBuilder(
+        future: cookieRequest.get(
+          "http://localhost:8000/json/"
+        ),
+        builder: (context, snapshot) {
+          // Loading
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          // Cookie invalid → belum login
+          if (snapshot.hasError) {
+            return LoginPage();
+          }
+
+          // Cookie valid → langsung ke Home
+          return HomePage();
+        },
+      ),
     );
   }
 }

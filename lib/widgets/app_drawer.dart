@@ -1,37 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:zsport_mobile/screens/home_page.dart';
+import 'package:zsport_mobile/screens/my_product_page.dart';
+import 'package:zsport_mobile/screens/add_product_page.dart';
+import 'package:zsport_mobile/screens/login_page.dart';
 
-class AppMainDrawer extends StatelessWidget {
-  const AppMainDrawer({super.key});
-
+class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: SafeArea(
-        child: ListView(
-          children: [
-            const ListTile(
-              title: Text('Menu'),
-              dense: true,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+
+          DrawerHeader(
+            decoration: const BoxDecoration(color: Colors.green),
+            child: const Text(
+              "ZSPORT",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const Divider(height: 1),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Halaman Utama'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.add_box),
-              title: const Text('Tambah Produk'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/add-product');
-              },
-            ),
-          ],
-        ),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text("Home"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => HomePage()),
+              );
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.grid_view_rounded),
+            title: const Text("My Products"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MyProductPage()),
+              );
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.add_box_outlined),
+            title: const Text("Add Product"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddProductPage()),
+              );
+            },
+          ),
+
+          const Divider(),
+
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text("Logout",
+                style: TextStyle(color: Colors.red)),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => LoginPage()),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

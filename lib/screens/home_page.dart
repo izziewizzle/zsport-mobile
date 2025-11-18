@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_drawer.dart';
+import 'product_list_page.dart';
+import 'my_product_page.dart';
+import 'add_product_page.dart';
 
-class ZSPORTHomePage extends StatelessWidget {
-  const ZSPORTHomePage({super.key});
-
-  void _snack(BuildContext ctx, String msg) {
-    final m = ScaffoldMessenger.of(ctx);
-    m.clearSnackBars();
-    m.showSnackBar(SnackBar(content: Text(msg)));
-  }
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('ZSPORT')),
-      drawer: const AppMainDrawer(),
+      drawer: AppDrawer(),     // ⚡ FIX: Drawer yang benar
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -22,7 +19,8 @@ class ZSPORTHomePage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // All Products (Biru)
+
+                /// ALL PRODUCTS
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
@@ -33,13 +31,20 @@ class ZSPORTHomePage extends StatelessWidget {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    onPressed: () =>
-                        _snack(context, 'Kamu telah menekan tombol All Products di ZSPORT'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ProductListPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
+
                 const SizedBox(height: 12),
 
-                // My Products (Hijau)
+                /// MY PRODUCTS
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
@@ -50,13 +55,20 @@ class ZSPORTHomePage extends StatelessWidget {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    onPressed: () =>
-                        _snack(context, 'Kamu telah menekan tombol My Products di ZSPORT'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MyProductPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
+
                 const SizedBox(height: 12),
 
-                // Create Product (Merah) -> ke halaman form
+                /// ADD PRODUCT
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
@@ -67,7 +79,14 @@ class ZSPORTHomePage extends StatelessWidget {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    onPressed: () => Navigator.pushNamed(context, '/add-product'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AddProductPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
