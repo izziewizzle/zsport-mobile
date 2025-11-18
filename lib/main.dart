@@ -8,44 +8,41 @@ import 'package:zsport_mobile/screens/home_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final cookieRequest = CookieRequest();
-
   runApp(
     Provider(
-      create: (_) => cookieRequest,
-      child: MaterialApp(
-        home: LoginPage(),
-      ),
+      create: (_) => CookieRequest(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final cookieRequest = Provider.of<CookieRequest>(context);
+    final cookieRequest = context.watch<CookieRequest>();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "ZSPORT",
       home: FutureBuilder(
-        future: cookieRequest.get(
-          "http://localhost:8000/json/"
-        ),
+        future: cookieRequest.get("http://localhost:8000/json/"),
         builder: (context, snapshot) {
-          // Loading
+
+          // Masih loading cookie
           if (snapshot.connectionState != ConnectionState.done) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           }
 
-          // Cookie invalid → belum login
-          if (snapshot.hasError) {
+          // Cookie gagal = user belum login
+          if (snapshot.hasError || !cookieRequest.loggedIn) {
             return LoginPage();
           }
 
-          // Cookie valid → langsung ke Home
+          // Cookie valid = user sudah login
           return HomePage();
         },
       ),

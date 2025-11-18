@@ -41,18 +41,23 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const InputDecoration(labelText: "Confirm Password"),
             ),
             const SizedBox(height: 20),
+
             ElevatedButton(
               onPressed: () async {
                 final response = await request.postJson(
                   "http://localhost:8000/auth/register/",
                   jsonEncode({
-                    'username': _username.text,
-                    'password1': _password1.text,
-                    'password2': _password2.text,
+                    "username": _username.text,
+                    "password1": _password1.text,
+                    "password2": _password2.text,
                   }),
                 );
 
-                if (response['status'] == 'success') {
+                if (response['status'] == true || response['status'] == 'success') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Registrasi berhasil! Silakan login.")),
+                  );
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => const LoginPage()),
@@ -64,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 }
               },
               child: const Text("Register"),
-            )
+            ),
           ],
         ),
       ),

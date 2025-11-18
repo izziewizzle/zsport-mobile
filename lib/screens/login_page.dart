@@ -1,78 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:zsport_mobile/screens/register.dart';
 import 'package:zsport_mobile/screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: "Username"),
+              controller: _username,
+              decoration: const InputDecoration(labelText: "Username"),
             ),
             const SizedBox(height: 12),
             TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: "Password"),
+              controller: _password,
               obscureText: true,
+              decoration: const InputDecoration(labelText: "Password"),
             ),
+            const SizedBox(height: 24),
+
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  final response = await request.login(
+                    "http://localhost:8000/auth/login/",
+                    {
+                      "username": _username.text,
+                      "password": _password.text,
+                    },
+                  );
+
+                  if (request.loggedIn) {
+                    // Simpan username
+                    request.jsonData["username"] = response["username"];
+
+                    // Pindah ke HomePage
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => HomePage()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(response["message"])),
+                    );
+                  }
+                },
+                child: const Text("Login"),
+              ),
+            ),
+
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final response = await request.login(
-                  "http://localhost:8000/auth/login/",
-                  {
-                    "username": _usernameController.text,
-                    "password": _passwordController.text,
-                  },
-                );
 
-                if (request.loggedIn) {
-                  // SIMPAN user info dari response login
-                  request.jsonData["username"] = response["username"];
-
-                  Navigator.pushReplacement(
+            Center(
+              child: TextButton(
+                child: const Text(
+                  "Don’t have an account? Register",
+                  style: TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => HomePage()),
+                    MaterialPageRoute(builder: (_) => const RegisterPage()),
                   );
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Login berhasil!")),
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: Text("Login gagal"),
-                      content: Text(response["message"]),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text("OK"),
-                        )
-                      ],
-                    ),
-                  );
-                }
-              },
-              child: Text("Login"),
-            ),
+                },
+              ),
+            )
           ],
         ),
       ),
