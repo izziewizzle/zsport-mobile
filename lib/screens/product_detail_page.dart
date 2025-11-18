@@ -9,48 +9,61 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.name),
-      ),
+      appBar: AppBar(title: Text(product.name)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Thumbnail
             if (product.thumbnail.isNotEmpty)
-              Image.network(
-                product.thumbnail,
-                width: double.infinity,
-                height: 200,
-                fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  product.thumbnail,
+                  width: double.infinity,
+                  height: 230,
+                  fit: BoxFit.cover,
+                ),
               ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            Text("Name: ${product.name}",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 22)),
+            Text(
+              product.name,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
             const SizedBox(height: 8),
 
-            Text("Price: Rp ${product.price}",
+            Text("Rp ${product.price}",
                 style: const TextStyle(fontSize: 18)),
+
             const SizedBox(height: 8),
 
             Text("Category: ${product.category}",
-                style: const TextStyle(fontSize: 18)),
+                style: const TextStyle(fontSize: 16)),
+
             const SizedBox(height: 8),
 
             Text("Featured: ${product.isFeatured ? "Yes" : "No"}",
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 16),
+                style: const TextStyle(fontSize: 16)),
 
-            Text("Description:",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 18)),
-            const SizedBox(height: 6),
+            const SizedBox(height: 20),
 
-            Text(product.description, style: const TextStyle(fontSize: 16)),
+            const Text(
+              "Description:",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              product.description,
+              style: const TextStyle(fontSize: 15),
+            ),
 
             const SizedBox(height: 30),
 

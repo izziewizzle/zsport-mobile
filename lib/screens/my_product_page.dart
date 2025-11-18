@@ -12,7 +12,6 @@ class MyProductPage extends StatefulWidget {
 }
 
 class _MyProductPageState extends State<MyProductPage> {
-
   Future<List<Product>> fetchMyProducts(BuildContext context) async {
     final request = context.watch<CookieRequest>();
     final response = await request.get("http://localhost:8000/json/");
@@ -27,12 +26,18 @@ class _MyProductPageState extends State<MyProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(title: Text("My Products")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("My Products"),
+        backgroundColor: colors.primary,
+        foregroundColor: Colors.white,
+      ),
       body: FutureBuilder(
         future: fetchMyProducts(context),
         builder: (context, snapshot) {
-
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -40,32 +45,113 @@ class _MyProductPageState extends State<MyProductPage> {
           final List<Product> items = snapshot.data!;
 
           if (items.isEmpty) {
-            return Center(child: Text("Kamu belum punya produk."));
+            return const Center(
+              child: Text(
+                "Kamu belum punya produk.",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
           }
 
-          return ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              
-              final Product p = items[index];
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: GridView.builder(
+              itemCount: items.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,      // Sama seperti ProductList
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.58,
+              ),
+              itemBuilder: (context, index) {
+                final Product p = items[index];
 
-              return Card(
-                margin: const EdgeInsets.all(12),
-                child: ListTile(
-                  title: Text(p.name),
-                  subtitle: Text("Rp ${p.price}"),
-                  trailing: Icon(Icons.arrow_forward),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductDetailPage(product: p),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
+                return GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProductDetailPage(product: p),
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // --- Thumbnail ---
+                        ClipRRect(
+                          borderRadius:
+                              const BorderRadius.vertical(top: Radius.circular(14)),
+                          child: Image.network(
+                            p.thumbnail,
+                            height: 110,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // --- Name ---
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            p.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        // --- Price ---
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            "Rp ${p.price}",
+                            style: TextStyle(
+                              color: colors.primary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        // --- Description ---
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            p.description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

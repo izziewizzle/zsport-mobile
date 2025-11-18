@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:zsport_mobile/screens/login_page.dart';
+import 'package:provider/provider.dart';
+
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -23,23 +24,36 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Register")),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
               controller: _username,
-              decoration: const InputDecoration(labelText: "Username"),
+              decoration: const InputDecoration(
+                labelText: "Username",
+              ),
             ),
+
+            const SizedBox(height: 12),
+
             TextField(
               controller: _password1,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
+              decoration: const InputDecoration(
+                labelText: "Password",
+              ),
             ),
+
+            const SizedBox(height: 12),
+
             TextField(
               controller: _password2,
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Confirm Password"),
+              decoration: const InputDecoration(
+                labelText: "Confirm Password",
+              ),
             ),
+
             const SizedBox(height: 20),
 
             ElevatedButton(
@@ -53,14 +67,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   }),
                 );
 
-                if (response['status'] == true || response['status'] == 'success') {
+                if (response['status'] == true ||
+                    response['status'] == 'success') {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Registrasi berhasil! Silakan login.")),
+                    const SnackBar(
+                      content: Text("Registrasi berhasil! Silakan login."),
+                    ),
                   );
 
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                    MaterialPageRoute(
+                      builder: (_) => const LoginPage(),
+                    ),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

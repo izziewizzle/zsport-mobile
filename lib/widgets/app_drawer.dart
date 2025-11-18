@@ -7,13 +7,15 @@ import 'package:zsport_mobile/screens/login_page.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
 
           DrawerHeader(
-            decoration: const BoxDecoration(color: Colors.green),
+            decoration: BoxDecoration(color: primary),
             child: const Text(
               "ZSPORT",
               style: TextStyle(
@@ -61,12 +63,14 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text("Logout",
-                style: TextStyle(color: Colors.red)),
+            title: const Text(
+              "Logout",
+              style: TextStyle(color: Colors.red),
+            ),
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => LoginPage()),
+                MaterialPageRoute(builder: (_) => const LoginPage()),
               );
             },
           ),

@@ -11,10 +11,10 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  final TextEditingController nameC = TextEditingController();
-  final TextEditingController priceC = TextEditingController();
-  final TextEditingController descC = TextEditingController();
-  final TextEditingController thumbC = TextEditingController();
+  final nameC = TextEditingController();
+  final priceC = TextEditingController();
+  final descC = TextEditingController();
+  final thumbC = TextEditingController();
 
   String category = "equipment";
   bool isFeatured = false;
@@ -26,28 +26,38 @@ class _AddProductPageState extends State<AddProductPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Tambah Produk")),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             TextField(
               controller: nameC,
               decoration: const InputDecoration(labelText: "Nama Produk"),
             ),
+
+            const SizedBox(height: 12),
+
             TextField(
               controller: priceC,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: "Harga"),
             ),
+
+            const SizedBox(height: 12),
+
             TextField(
               controller: descC,
               decoration: const InputDecoration(labelText: "Deskripsi"),
             ),
+
+            const SizedBox(height: 12),
+
             TextField(
               controller: thumbC,
               decoration: const InputDecoration(labelText: "Thumbnail URL"),
             ),
 
             const SizedBox(height: 16),
+
             DropdownButtonFormField(
               value: category,
               decoration: const InputDecoration(labelText: "Kategori"),
@@ -83,14 +93,13 @@ class _AddProductPageState extends State<AddProductPage> {
                   },
                 );
 
-                /// LANGSUNG BALIK KE LIST + auto refresh
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => ProductListPage()),
                 );
               },
               child: const Text("Tambah Produk"),
-            )
+            ),
           ],
         ),
       ),
