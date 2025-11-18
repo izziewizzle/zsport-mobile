@@ -3,7 +3,7 @@ NPM     : 2406361675<br>
 Kelas   : PBP F<br>
 
 <details align="justify">
-    <summary><b>Tugas 9</b></summary>
+    <summary><b>Tugas 7</b></summary>
 
 ## Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
 Widget tree pada Flutter adalah struktur hierarki yang menggambarkan susunan semua elemen UI di layar. Setiap tampilan terdiri dari kumpulan widget yang saling membungkus, mulai dari root (seperti MaterialApp) hingga widget kecil seperti teks atau tombol. Hubungan parent-child berarti widget induk mengatur tata letak dan perilaku widget anak di dalamnya. Misalnya, Scaffold menjadi parent dari Column, dan Column menjadi parent dari beberapa tombol. Struktur ini membuat Flutter mudah mengelola dan merender tampilan secara terorganisir.
@@ -67,7 +67,7 @@ Saya menyesuaikan warna tema aplikasi Football Shop (ZSPORT) dengan menggunakan 
 </details>
 
 <details align="justify">
-    <summary><b>Tugas 7</b></summary>
+    <summary><b>Tugas 9</b></summary>
 
 ## 1. Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
 Model Dart diperlukan untuk memastikan bahwa data dari backend memiliki struktur yang konsisten dan aman ketika diproses oleh Flutter. Dengan model, setiap atribut memiliki tipe yang jelas sehingga kesalahan tipe data bisa terdeteksi sejak proses kompilasi, bukan saat aplikasi berjalan. Null-safety juga lebih terjamin karena setiap field dapat ditandai sebagai wajib atau opsional. Selain itu, penggunaan model membuat kode lebih mudah dirawat karena perubahan dalam struktur JSON hanya perlu diperbarui di satu tempat. Jika hanya bergantung pada Map<String, dynamic>, aplikasi lebih rentan terhadap kesalahan penulisan key, error tipe yang terlambat terdeteksi, dan struktur data yang tidak jelas.
